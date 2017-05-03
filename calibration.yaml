@@ -1,0 +1,14 @@
+%YAML:1.0
+camera_name: calibration
+image_width: 640
+image_height: 480
+camera_matrix:
+   rows: 3
+   cols: 3
+   data: [ 5.3256945800781250e+02, 0., 3.1950000000000000e+02, 0.,
+       5.3154107666015625e+02, 2.3950000000000000e+02, 0., 0., 1. ]
+distortion_coefficients:
+   rows: 1
+   cols: 5
+   data: [ 0., 0., 0., 0., 0. ]
+distortion_model: plumb_bob

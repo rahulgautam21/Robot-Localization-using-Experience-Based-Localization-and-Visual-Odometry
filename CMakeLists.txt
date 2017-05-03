@@ -1,0 +1,48 @@
+cmake_minimum_required(VERSION 2.8)
+PROJECT( MyProject )
+
+FIND_PACKAGE(RTABMap REQUIRED)
+FIND_PACKAGE(OpenCV REQUIRED)
+FIND_PACKAGE(PCL 1.7 REQUIRED)
+
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
+#set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall")
+
+# Use Qt4 or Qt5
+SET(MY_QT_VERSION 4 CACHE STRING "Which Qt version to use")
+IF("${MY_QT_VERSION}" STREQUAL "4")
+    FIND_PACKAGE(Qt4 COMPONENTS QtCore QtGui QtSvg)
+ELSE()
+    FIND_PACKAGE(Qt5 COMPONENTS Widgets Core Gui Svg)
+ENDIF()
+
+# include directories
+SET(INCLUDE_DIRS
+    ${RTABMap_INCLUDE_DIRS}
+    ${OpenCV_INCLUDE_DIRS}
+    ${PCL_INCLUDE_DIRS}
+)
+
+IF("${MY_QT_VERSION}" STREQUAL "4")
+    INCLUDE(${QT_USE_FILE})
+ENDIF()
+
+INCLUDE_DIRECTORIES(${INCLUDE_DIRS})
+
+# libraries
+SET(LIBRARIES
+    ${RTABMap_LIBRARIES}
+    ${OpenCV_LIBRARIES}
+    ${QT_LIBRARIES} 
+    ${PCL_LIBRARIES}
+)
+
+IF("${MY_QT_VERSION}" STREQUAL "4")
+    QT4_WRAP_CPP(moc_srcs ${qt_headers})
+ELSE()
+    QT5_WRAP_CPP(moc_srcs ${qt_headers})
+ENDIF()
+
+# app
+ADD_EXECUTABLE(rtabmap_project main.cpp ${moc_srcs})
+TARGET_LINK_LIBRARIES(rtabmap_project ${LIBRARIES})
